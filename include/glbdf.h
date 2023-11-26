@@ -1,0 +1,101 @@
+#ifndef GLBDF_H_
+#define GLBDF_H_
+
+#include <math.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include <GLFW/glfw3.h>
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+
+#define BDF_VERSION_MAJOR   0
+#define BDF_VERSION_MINOR   0
+#define BDF_VERSION_RELEASE 0
+#define BDF_VERSION_STATUS  "dev"
+#define BDF_DESCRIPTION     "Graphics Library with Glyph Bitmap Distribution Format"
+#define BDF_COPYRIGHT       "Copyright (c) 2023 Harbour development, https://github.com/dev-harbour/glbdf"
+#define BDF_LICENSE         ""
+
+#define ENCODING            65534
+#define BITMAP_WIDTH        9
+#define BITMAP_HEIGHT       18
+extern unsigned int fontData[ ENCODING ][ BITMAP_HEIGHT ];
+
+typedef enum bool
+{
+   F = 0,
+   T = ( ! 0 )
+} bool;
+
+typedef struct _App App;
+
+struct _App
+{
+   GLFWwindow  *window;
+   int          width;
+   int          height;
+   const char  *title;
+   bool         closeFlag;
+   double       cursorX;
+   double       cursorY;
+   int          keyCode;
+   int          keyScancode;
+   int          keyAction;
+   int          keyMods;
+   int          mouseButton;
+   int          mouseAction;
+   int          mouseMods;
+   int          winMaximized;
+   unsigned int background;
+};
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+// API functions
+App *CreateWindow( int width, int height, const char *title );
+bool  MainLoop( App *pApp );
+void  BeginDrawing( App *pApp );
+void  EndDrawing( const App *pApp );
+int   CloseAll( App *pApp );
+void  Background( App *pApp, unsigned int color );
+void  PollEvents();
+void  WaitEvents();
+void  WaitEventsTimeout( double timeout );
+
+//--- Text
+void DrawText( int x, int y, const char *text, unsigned int background, unsigned int foreground );
+
+//--- Shapes
+void Point( int x, int y, unsigned int color );
+void PointSize( int x, int y, int pointSize, unsigned int color );
+void Line( int x, int y, int width, int height, unsigned int color );
+void LineWidth( int x, int y, int width, int height, int lineWidth, unsigned int color );
+void Rect( int x, int y, int width, int height, unsigned int color );
+void RectWidthToInside( int x, int y, int width, int height, int lineWidth, unsigned int color );
+void RectWidthToCenter( int x, int y, int width, int height, int numberLines, unsigned int color );
+void RectWidthToOutside(int x, int y, int width, int height, int numberLines, unsigned int color);
+void FillRect( int x, int y, int width, int height, unsigned int color );
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+// internal
+void check_open_gl_error( const char *stmt, const char *fname, int line, GLenum *errCode );
+void set_color_from_hex( unsigned int hexColor );
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+// macros
+#define REPORT_OPENGL_ERROR( stmt ) \
+   GLenum errCode; \
+   check_open_gl_error( stmt, __FILE__, __LINE__, &errCode ); \
+   if( errCode != GL_NO_ERROR ) return;
+
+#define MAX( a, b ) ( ( a ) < ( b ) ? ( b ) : ( a ) )
+#define MIN( a, b ) ( ( a ) < ( b ) ? ( a ) : ( b ) )
+#define UNUSED( n ) ( ( void )( n ) )
+#define LEN( n ) ( sizeof( n ) / sizeof( n )[ 0 ] )
+
+#define BEGINDRAWING( pApp ) do { BeginDrawing( pApp )
+#define ENDDRAWING( pApp ) EndDrawing( pApp ); } while( 0 )
+
+#endif /* End GLBDF_H_ */
