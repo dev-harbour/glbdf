@@ -1,0 +1,7 @@
+# glbdf
+*.bak
+*.bdf
+*.exe
+build
+lib
+tmp
