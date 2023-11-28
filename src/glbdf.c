@@ -275,6 +275,23 @@ void WaitEventsTimeout( double timeout )
    glfwWaitEventsTimeout( timeout );
 }
 
+void SetTargetFPS( App *pApp, int targetFPS )
+{
+   const double targetFrameTime = 1.0 / targetFPS;
+
+   double currentTime = glfwGetTime();
+   double frameTime = currentTime - pApp->previousTime;
+
+   if( frameTime < targetFrameTime )
+   {
+      double sleepTime = targetFrameTime - frameTime;
+      glfwWaitEventsTimeout( sleepTime );
+   }
+
+   pApp->previousTime = currentTime;
+}
+
+
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 // Text
 void DrawText( int x, int y, const char *text, unsigned int background, unsigned int foreground )

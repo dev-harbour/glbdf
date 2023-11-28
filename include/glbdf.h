@@ -50,6 +50,7 @@ struct _App
    int          mouseMods;
    int          winMaximized;
    unsigned int background;
+   double       previousTime;
 };
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
@@ -63,6 +64,7 @@ void  Background( App *pApp, unsigned int color );
 void  PollEvents();
 void  WaitEvents();
 void  WaitEventsTimeout( double timeout );
+void SetTargetFPS( App *pApp, int targetFPS );
 
 //--- Text
 void DrawText( int x, int y, const char *text, unsigned int background, unsigned int foreground );
