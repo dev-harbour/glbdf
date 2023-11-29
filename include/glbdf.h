@@ -30,7 +30,24 @@ typedef enum bool
    T = ( ! 0 )
 } bool;
 
-typedef struct _App App;
+typedef struct _App    App;
+typedef struct _Button Button;
+
+struct _Button
+{
+   App         *pApp;
+   int          x;
+   int          y;
+   int          width;
+   int          height;
+   int          textMargin;
+   bool         state;
+   bool         mouseOver;
+   bool         clicked;
+   unsigned int buttonID;
+   unsigned int color;
+   void         ( *onClick )();
+};
 
 struct _App
 {
@@ -55,7 +72,7 @@ struct _App
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 // API functions
-App *CreateWindow( int width, int height, const char *title );
+App  *CreateWindow( int width, int height, const char *title );
 bool  MainLoop( App *pApp );
 void  BeginDrawing( App *pApp );
 void  EndDrawing( const App *pApp );
@@ -64,10 +81,16 @@ void  Background( App *pApp, unsigned int color );
 void  PollEvents();
 void  WaitEvents();
 void  WaitEventsTimeout( double timeout );
-void SetTargetFPS( App *pApp, int targetFPS );
+void  SetTargetFPS( App *pApp, int targetFPS );
 
 //--- Text
-void DrawText( int x, int y, const char *text, unsigned int background, unsigned int foreground );
+void DrawText( int x, int y, const char *text, unsigned int foreground );
+void DrawTextBg( int x, int y, const char *text, unsigned int background, unsigned int foreground );
+
+// Button
+Button *ButtonNew( App *pApp, void ( *onClick )() );
+void    DrawButton( Button *pButton, int x, int y, const char *text, unsigned int background, unsigned int foreground );
+void    FreeButton( Button *pButton );
 
 //--- Shapes
 void Point( int x, int y, unsigned int color );
@@ -79,6 +102,10 @@ void RectWidthToInside( int x, int y, int width, int height, int lineWidth, unsi
 void RectWidthToCenter( int x, int y, int width, int height, int numberLines, unsigned int color );
 void RectWidthToOutside(int x, int y, int width, int height, int numberLines, unsigned int color);
 void FillRect( int x, int y, int width, int height, unsigned int color );
+
+//--- HTTP functions
+bool openURL( const char *url );
+bool openEmailClient( const char *emailAddress );
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 // internal

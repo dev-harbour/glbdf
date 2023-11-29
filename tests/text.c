@@ -17,7 +17,7 @@ int main()
          int startX = ( app->width - 225 ) / 2;
          int startY = ( app->height - 18 ) / 2;
 
-         DrawText( startX, startY, "Ą, Ć, Ę, Ł, Ń, Ó, Ś, Ź, Ż", 0xFAFAFA, 0x0 );
+         DrawTextBg( startX, startY, "Ą, Ć, Ę, Ł, Ń, Ó, Ś, Ź, Ż", 0xFAFAFA, 0x0 );
 
       ENDDRAWING( app );
       WaitEvents();
