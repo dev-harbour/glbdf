@@ -6,7 +6,7 @@
 
 int main()
 {
-   App *app = CreateWindow( 512, 512, "Dancing sun" );
+   App *app = CreateWindow( 512, 512, "Dancing sun illusion" );
 
    Background( app, 0x0 );
 
