@@ -9,7 +9,7 @@
 
 int main()
 {
-   App *app = CreateWindow( 512, 512, "Anpáŋ Wí Čháŋglé - ");
+   App *app = CreateWindow( 512, 512, "Anpáŋ Wí Čháŋglé - " );
 
    Background( app, 0x0 );
 
