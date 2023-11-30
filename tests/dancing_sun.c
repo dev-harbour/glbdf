@@ -1,15 +1,12 @@
 /*
- * The phrase 'Anpáŋ Wí Čháŋglé' in Lakota language translates to 'Dancing Sun'.
- * 'Anpáŋ' and 'Wí' both refer to the sun, with 'Anpáŋ' being a more direct term
- * for 'sun', while 'Wí' can also mean 'sun' but is often used in broader or more
- * symbolic contexts. 'Čháŋglé' means 'to dance' or 'dancing'.
+ *
  */
 
 #include "glbdf.h"
 
 int main()
 {
-   App *app = CreateWindow( 512, 512, "Anpáŋ Wí Čháŋglé - " );
+   App *app = CreateWindow( 512, 512, "Dancing sun" );
 
    Background( app, 0x0 );
 
