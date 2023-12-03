@@ -154,7 +154,8 @@ App *CreateWindow( int width, int height, const char *title )
    glfwSetWindowMaximizeCallback( pApp->window, window_maximize_callback );
    glfwSetWindowSizeCallback( pApp->window, window_size_callback );
 
-   //glfwSetWindowSizeLimits( pApp->window, pApp->width, pApp->height, GLFW_DONT_CARE , GLFW_DONT_CARE );
+   glfwSetWindowSizeLimits( pApp->window, pApp->width, pApp->height, GLFW_DONT_CARE , GLFW_DONT_CARE );
+   glfwSetCursorPos( pApp->window, pApp->width / 2, pApp->height / 2 );
 
    return pApp;
 }

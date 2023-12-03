@@ -24,14 +24,26 @@
 #define BITMAP_HEIGHT       18
 extern unsigned int fontData[ ENCODING ][ BITMAP_HEIGHT ];
 
+#define MENU_BAR_MAX          15
+#define MENU_BAR_HEIGHT       24
+#define MENU_BAR_TEXT_MARGIN  10
+
+#define MENU_ITEM_MAX         25
+#define MENU_ITEM_HEIGHT      24
+#define MENU_ITEM_TEXT_MARGIN 10
+
+
 typedef enum bool
 {
    F = 0,
    T = ( ! 0 )
 } bool;
 
-typedef struct _App    App;
-typedef struct _Button Button;
+typedef struct _App      App;
+typedef struct _Button   Button;
+typedef struct _MenuItem MenuItem;
+typedef struct _MenuBar  MenuBar;
+typedef struct _Menu     Menu;
 
 struct _Button
 {
@@ -43,10 +55,46 @@ struct _Button
    int          textMargin;
    bool         state;
    bool         mouseOver;
-   bool         clicked;
+   bool         isClicked;
    unsigned int buttonID;
    unsigned int color;
    void         ( *onClick )();
+};
+
+struct _MenuItem
+{
+   int         x;
+   int         y;
+   int         width;
+   int         height;
+   const char *selectTitle;
+   int         textMargin;
+   bool        mouseOver;
+   bool        isClicked;
+   void        ( *onClick )();
+};
+
+struct _MenuBar
+{
+   int         x;
+   int         y;
+   int         width;
+   int         height;
+   const char *title;
+   int         textMargin;
+   bool        mouseOver;
+   bool        isClicked;
+   MenuItem   *pMenuItems[ MENU_ITEM_MAX ];
+   int         iMenuItemsCount;
+   int         iDefaultMenuItemsWidth;
+   bool        bMenuItemDisplayed;
+};
+
+struct _Menu
+{
+   App     *pApp;
+   MenuBar *pMenuBars[ MENU_BAR_MAX ];
+   int      iMenuBarsCount;
 };
 
 struct _App
@@ -91,6 +139,13 @@ void DrawTextBg( int x, int y, const char *text, unsigned int background, unsign
 Button *ButtonNew( App *pApp, void ( *onClick )() );
 void    DrawButton( Button *pButton, int x, int y, const char *text, unsigned int background, unsigned int foreground );
 void    FreeButton( Button *pButton );
+
+// Menu
+Menu    *MenuNew( App *pApp );
+MenuBar *MenuBarNew( Menu *pMenu, const char *title );
+void     MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, void ( *onClick )() );
+void     DrawMenu( Menu *pMenu );
+void     FreeMenu( Menu *pMenu );
 
 //--- Shapes
 void Point( int x, int y, unsigned int color );

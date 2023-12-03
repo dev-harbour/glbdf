@@ -94,7 +94,6 @@ void FreeButton( Button *pButton )
    if( pButton )
    {
       free( pButton );
-      pButton = NULL;
    }
    else
    {
