@@ -5,10 +5,9 @@
 #include "glbdf.h"
 
 //* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
-static int is_point_inside( Button *pButton, int x, int y )
+static bool is_point_inside( Button *pButton, int x, int y )
 {
-   return x >= pButton->x && x <= ( pButton->x + pButton->width ) &&
-          y >= pButton->y && y <= ( pButton->y + pButton->height );
+   return x >= pButton->x && x <= ( pButton->x + pButton->width ) && y >= pButton->y && y <= ( pButton->y + pButton->height );
 }
 
 Button *ButtonNew( App *pApp, void ( *onClick )() )
@@ -55,7 +54,7 @@ void DrawButton( Button *pButton, int x, int y, const char *text, unsigned int b
       {
          if( pButton->mouseOver )
          {
-            pButton->clicked = T;
+            pButton->isClicked = T;
             if( pButton->onClick )
             {
                pButton->onClick();
@@ -64,13 +63,13 @@ void DrawButton( Button *pButton, int x, int y, const char *text, unsigned int b
       }
       else if( pButton->pApp->mouseButton == GLFW_MOUSE_BUTTON_LEFT && pButton->pApp->mouseAction == GLFW_RELEASE )
       {
-         pButton->clicked = F;
+         pButton->isClicked = F;
       }
 
       // Drawing the rectangle for the background
       FillRect( x, y, pButton->width, pButton->height, background );
 
-      if( pButton->clicked )
+      if( pButton->isClicked )
       {
          RectWidthToInside( x, y, pButton->width, pButton->height, 2, 0x0 );
       }
