@@ -4,9 +4,13 @@
 
 #include "glbdf.h"
 
-void onClick()
+static void lastMenuItemClicked( MenuItem *item )
 {
-   printf( "Test menu\n" );
+   printf( "lastMenuItemClicked \n" );
+   if( item )
+   {
+      printf( "Kliknięto: %s\n", item->selectTitle );
+   }
 }
 
 int main()
@@ -16,27 +20,27 @@ int main()
    Menu *menu = MenuNew( app );
 
    MenuBar *fileMenu = MenuBarNew( menu, "File" );
-   MenuBarAddItem( fileMenu,"New",              onClick );
-   MenuBarAddItem( fileMenu,"Open",             onClick );
-   MenuBarAddItem( fileMenu,"Save",             onClick );
-   MenuBarAddItem( fileMenu,"Save as...",       onClick );
-   MenuBarAddItem( fileMenu,"Close",            onClick );
-   MenuBarAddItem( fileMenu,"Print",            onClick );
-   MenuBarAddItem( fileMenu,"Printer setup...", onClick );
-   MenuBarAddItem( fileMenu,"DOS Shell",        onClick );
-   MenuBarAddItem( fileMenu,"Exit",             onClick );
+   MenuBarAddItem( fileMenu, "New",  GLFW_KEY_N | GLFW_MOD_CONTROL, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Open", GLFW_KEY_O | GLFW_MOD_CONTROL, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Save",             0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Save as...",       0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Close",            0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Print",            0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Printer setup...", 0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "DOS Shell",        0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Exit",             0, lastMenuItemClicked );
 
    MenuBar *editMenu = MenuBarNew( menu, "Edit" );
-   MenuBarAddItem( editMenu, "Undo",           onClick );
-   MenuBarAddItem( editMenu, "Cut",            onClick );
-   MenuBarAddItem( editMenu, "Copy",           onClick );
-   MenuBarAddItem( editMenu, "Paste",          onClick );
-   MenuBarAddItem( editMenu, "Clear",          onClick );
-   MenuBarAddItem( editMenu, "Delete",         onClick );
-   MenuBarAddItem( editMenu, "Paragraph",      onClick );
-   MenuBarAddItem( editMenu, "Upcase Block",   onClick );
-   MenuBarAddItem( editMenu, "Downcase Block", onClick );
-   MenuBarAddItem( editMenu, "Stats of Block", onClick );
+   MenuBarAddItem( editMenu, "Undo",           0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Cut",            0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Copy",           0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Paste",          0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Clear",          0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Delete",         0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Paragraph",      0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Upcase Block",   0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Downcase Block", 0, lastMenuItemClicked );
+   MenuBarAddItem( editMenu, "Stats of Block", 0, lastMenuItemClicked );
 
    MenuBar *searchMenu = MenuBarNew( menu, "Search" );
 
