@@ -26,6 +26,7 @@ Menu *MenuNew( App *pApp )
 
    memset( pMenu, 0, sizeof( Menu ) );
    pMenu->pApp = pApp;
+   pApp->pMenu = pMenu; // Przypisanie utworzonego menu do struktury App
 
    return pMenu;
 }
@@ -55,7 +56,7 @@ MenuBar *MenuBarNew( Menu *pMenu, const char *title )
    return pMenuBar;
 }
 
-void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, void ( *onClick )() )
+void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int shortcutKey, void ( *onClick )( MenuItem * ) )
 {
    if( pMenuBar->iMenuItemsCount >= MENU_ITEM_MAX )
    {
@@ -74,6 +75,7 @@ void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, void ( *onClick
 
    pMenuItem->selectTitle = selectTitle;
    pMenuItem->textMargin = MENU_ITEM_TEXT_MARGIN;
+   pMenuItem->acceleratorKey = shortcutKey;
    pMenuItem->onClick = onClick;
 
    int textWidth = strlen( selectTitle ) * BITMAP_WIDTH;
@@ -149,7 +151,7 @@ void DrawMenu( Menu *pMenu )
                      pMenuItem->isClicked = T;
                      if( pMenuItem->onClick )
                      {
-                        pMenuItem->onClick();
+                        pMenuItem->onClick( pMenuItem );
                      }
                   }
                }

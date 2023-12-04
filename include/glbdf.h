@@ -71,7 +71,8 @@ struct _MenuItem
    int         textMargin;
    bool        mouseOver;
    bool        isClicked;
-   void        ( *onClick )();
+   int         acceleratorKey;
+   void        ( *onClick )( MenuItem *pMenuItem );
 };
 
 struct _MenuBar
@@ -116,6 +117,7 @@ struct _App
    int          winMaximized;
    unsigned int background;
    double       previousTime;
+   Menu        *pMenu;
 };
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
@@ -143,7 +145,7 @@ void    FreeButton( Button *pButton );
 // Menu
 Menu    *MenuNew( App *pApp );
 MenuBar *MenuBarNew( Menu *pMenu, const char *title );
-void     MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, void ( *onClick )() );
+void     MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int shortcutKey, void ( *onClick )( MenuItem * ) );
 void     DrawMenu( Menu *pMenu );
 void     FreeMenu( Menu *pMenu );
 

@@ -22,6 +22,25 @@ static void key_callback( GLFWwindow *window, int key, int scancode, int action,
    pApp->keyScancode = scancode;
    pApp->keyAction   = action;
    pApp->keyMods     = mods;
+
+   if( action == GLFW_PRESS )
+   {
+      for( int i = 0; i < pApp->pMenu->iMenuBarsCount; ++i )
+      {
+         MenuBar *pMenuBar = pApp->pMenu->pMenuBars[ i ];
+         for( int j = 0; j < pMenuBar->iMenuItemsCount; ++j )
+         {
+            MenuItem *pMenuItem = pMenuBar->pMenuItems[ j ];
+            if( pMenuItem->acceleratorKey == ( key | mods ) )
+            {
+               if( pMenuItem->onClick )
+               {
+                  pMenuItem->onClick( pMenuItem );
+               }
+            }
+         }
+      }
+   }
 }
 
 static void mouse_button_callback( GLFWwindow *window, int button, int action, int mods )
