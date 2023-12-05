@@ -71,7 +71,8 @@ struct _MenuItem
    int         textMargin;
    bool        mouseOver;
    bool        isClicked;
-   int         acceleratorKey;
+   int         shortcutKey;
+   const char *shortcutName;
    void        ( *onClick )( MenuItem *pMenuItem );
 };
 
@@ -133,6 +134,9 @@ void  WaitEvents();
 void  WaitEventsTimeout( double timeout );
 void  SetTargetFPS( App *pApp, int targetFPS );
 
+// Key
+const char *GenerateShortcutName( int key, int mods );
+
 //--- Text
 void DrawText( int x, int y, const char *text, unsigned int foreground );
 void DrawTextBg( int x, int y, const char *text, unsigned int background, unsigned int foreground );
@@ -145,7 +149,7 @@ void    FreeButton( Button *pButton );
 // Menu
 Menu    *MenuNew( App *pApp );
 MenuBar *MenuBarNew( Menu *pMenu, const char *title );
-void     MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int shortcutKey, void ( *onClick )( MenuItem * ) );
+void     MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int key, int mods, void ( *onClick )( MenuItem * ) );
 void     DrawMenu( Menu *pMenu );
 void     FreeMenu( Menu *pMenu );
 

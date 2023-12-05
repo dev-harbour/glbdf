@@ -31,7 +31,7 @@ static void key_callback( GLFWwindow *window, int key, int scancode, int action,
          for( int j = 0; j < pMenuBar->iMenuItemsCount; ++j )
          {
             MenuItem *pMenuItem = pMenuBar->pMenuItems[ j ];
-            if( pMenuItem->acceleratorKey == ( key | mods ) )
+            if( pMenuItem->shortcutKey == key )
             {
                if( pMenuItem->onClick )
                {

@@ -56,7 +56,7 @@ MenuBar *MenuBarNew( Menu *pMenu, const char *title )
    return pMenuBar;
 }
 
-void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int shortcutKey, void ( *onClick )( MenuItem * ) )
+void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int key, int mods, void ( *onClick )( MenuItem * ) )
 {
    if( pMenuBar->iMenuItemsCount >= MENU_ITEM_MAX )
    {
@@ -73,11 +73,6 @@ void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int shortcutKey
 
    memset( pMenuItem, 0, sizeof( MenuItem ) );
 
-   pMenuItem->selectTitle = selectTitle;
-   pMenuItem->textMargin = MENU_ITEM_TEXT_MARGIN;
-   pMenuItem->acceleratorKey = shortcutKey;
-   pMenuItem->onClick = onClick;
-
    int textWidth = strlen( selectTitle ) * BITMAP_WIDTH;
    pMenuItem->width = textWidth + 2 * MENU_ITEM_TEXT_MARGIN;
 
@@ -85,8 +80,12 @@ void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int shortcutKey
    {
       pMenuBar->iDefaultMenuItemsWidth = pMenuItem->width;
    }
-
    pMenuItem->height = MENU_ITEM_HEIGHT;
+   pMenuItem->selectTitle = selectTitle;
+   pMenuItem->textMargin = MENU_ITEM_TEXT_MARGIN;
+   pMenuItem->shortcutKey = key;
+   pMenuItem->shortcutName = GenerateShortcutName( key, mods );
+   pMenuItem->onClick = onClick;
 
    pMenuBar->pMenuItems[ pMenuBar->iMenuItemsCount++ ] = pMenuItem;
 }
