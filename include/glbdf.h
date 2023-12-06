@@ -89,7 +89,7 @@ struct _MenuBar
    MenuItem   *pMenuItems[ MENU_ITEM_MAX ];
    int         iMenuItemsCount;
    int         iMenuItemsWidth;
-   int         iMenuItemsWidthShortcutName;
+   int         iMenuItemsWidthShortcut;
    bool        bMenuItemDisplayed;
 };
 

@@ -131,9 +131,9 @@ void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int key, int mo
 
    textWidth = strlen( pMenuItem->shortcutName ) * BITMAP_WIDTH;
    tempWidth = textWidth + MENU_ITEM_TEXT_MARGIN;
-   if( tempWidth > pMenuBar->iMenuItemsWidthShortcutName )
+   if( tempWidth > pMenuBar->iMenuItemsWidthShortcut )
    {
-      pMenuBar->iMenuItemsWidthShortcutName = tempWidth;
+      pMenuBar->iMenuItemsWidthShortcut = tempWidth;
    }
 
    pMenuItem->onClick = onClick;
@@ -179,7 +179,7 @@ void DrawMenu( Menu *pMenu )
 
                pMenuItem->x = pMenuBar->x;
                pMenuItem->y = menuItemY;
-               pMenuItem->width = pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcutName;
+               pMenuItem->width = pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcut;
                pMenuItem->height = MENU_ITEM_HEIGHT;
 
                if( is_point_inside_menu_item( pMenuItem, pMenu->pApp->cursorX, pMenu->pApp->cursorY ) )
@@ -187,6 +187,8 @@ void DrawMenu( Menu *pMenu )
                   isMouseOverMenuItem = T;
                   pMenuItem->mouseOver = T;
                   FillRect( pMenuItem->x, pMenuItem->y, pMenuItem->width, pMenuItem->height, 0xE5E5E5 );
+                  FillRect( pMenuBar->x, pMenuBar->y, pMenuBar->width, MENU_BAR_HEIGHT, 0xE5E5E5 );
+                  DrawText( pMenuBar->x + pMenuBar->textMargin, ( MENU_BAR_HEIGHT - BITMAP_HEIGHT ) / 2, pMenuBar->title, pMenuBar->mouseOver ? 0XB2B2B2 : 0x0 );
                }
                else
                {
@@ -199,13 +201,14 @@ void DrawMenu( Menu *pMenu )
                // Rysowanie selectTitle
                DrawText( pMenuItem->x + pMenuItem->textMargin, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->selectTitle, 0x0 );
                // Rysowanie shortcutName
-               int shortcutX = pMenuItem->x + pMenuItem->width - pMenuBar->iMenuItemsWidthShortcutName;
+               int shortcutTextWidth = strlen( pMenuItem->shortcutName ) * BITMAP_WIDTH;
+               int shortcutX = pMenuItem->x + pMenuItem->width - shortcutTextWidth - pMenuItem->textMargin;
                DrawText( shortcutX, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->shortcutName, pMenuItem->mouseOver ? 0x0 : 0XB2B2B2 );
 
                menuItemY += pMenuItem->height;
             }
 
-            Rect( pMenuBar->x + 1, MENU_BAR_HEIGHT, pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcutName, pMenuBar->iMenuItemsCount * MENU_ITEM_HEIGHT, 0x0 );
+            Rect( pMenuBar->x + 1, MENU_BAR_HEIGHT, pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcut, pMenuBar->iMenuItemsCount * MENU_ITEM_HEIGHT, 0x0 );
 
             if( ! pMenuBar->mouseOver && ! isMouseOverMenuItem )
             {
