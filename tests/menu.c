@@ -8,9 +8,7 @@ static void lastMenuItemClicked( MenuItem *item )
 {
    if( item )
    {
-      printf( "Select title  : %s\n", item->selectTitle );
-      printf( "Shortcut Key  : %d\n", item->shortcutKey );
-      printf( "Shortcut name : %s\n", item->shortcutName );
+      PrintMenuItemStruct( item );
    }
 }
 
@@ -21,9 +19,9 @@ int main()
    Menu *menu = MenuNew( app );
 
    MenuBar *fileMenu = MenuBarNew( menu, "File" );
-   MenuBarAddItem( fileMenu, "New",  GLFW_KEY_N, GLFW_MOD_CONTROL, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "Open", GLFW_KEY_O, GLFW_MOD_CONTROL, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "Save",             0, 0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "New",        GLFW_KEY_N, GLFW_MOD_CONTROL, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Open",       GLFW_KEY_O, GLFW_MOD_CONTROL, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Save",       GLFW_KEY_S, GLFW_MOD_CONTROL, lastMenuItemClicked );
    MenuBarAddItem( fileMenu, "Save as...",       0, 0, lastMenuItemClicked );
    MenuBarAddItem( fileMenu, "Close",            0, 0, lastMenuItemClicked );
    MenuBarAddItem( fileMenu, "Print",            0, 0, lastMenuItemClicked );
