@@ -22,12 +22,12 @@ int main()
    MenuBarAddItem( fileMenu, "New",        GLFW_KEY_N, GLFW_MOD_CONTROL, lastMenuItemClicked );
    MenuBarAddItem( fileMenu, "Open",       GLFW_KEY_O, GLFW_MOD_CONTROL, lastMenuItemClicked );
    MenuBarAddItem( fileMenu, "Save",       GLFW_KEY_S, GLFW_MOD_CONTROL, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "Save as...",       0, 0, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "Close",            0, 0, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "Print",            0, 0, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "Printer setup...", 0, 0, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "DOS Shell",        0, 0, lastMenuItemClicked );
-   MenuBarAddItem( fileMenu, "Exit",             0, 0, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Save as...", GLFW_KEY_S, GLFW_MOD_CONTROL | GLFW_MOD_SHIFT, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Close",            0, 0,                   lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Print",      GLFW_KEY_P, GLFW_MOD_CONTROL, lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Printer setup...", 0, 0,                   lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "DOS Shell",        0, 0,                   lastMenuItemClicked );
+   MenuBarAddItem( fileMenu, "Exit",       GLFW_KEY_Q, GLFW_MOD_CONTROL, lastMenuItemClicked );
 
    MenuBar *editMenu = MenuBarNew( menu, "Edit" );
    MenuBarAddItem( editMenu, "Undo",           0, 0, lastMenuItemClicked );
