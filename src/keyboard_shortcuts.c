@@ -58,32 +58,28 @@ static const char *get_key_name( int key )
       case GLFW_KEY_F11: return "F11";
       case GLFW_KEY_F12: return "F12";
 
-      default:                    return "UNKNOWN";
+      default:           return "";
    }
 }
 
-const char *GenerateShortcutName( int key, int mods )
+void GenerateShortcutName( char *buffer, int bufferSize, int key, int mods )
 {
-   static char shortcutName[ 64 ];
+   buffer[ 0 ] = '\0';
 
-   shortcutName[ 0 ] = '\0';
-
-   if( mods & GLFW_MOD_CONTROL ) strcat( shortcutName, "Ctrl+"  );
-   if( mods & GLFW_MOD_ALT     ) strcat( shortcutName, "Alt+"   );
-   if( mods & GLFW_MOD_SHIFT   ) strcat( shortcutName, "Shift+" );
-   if( mods & GLFW_MOD_SUPER   ) strcat( shortcutName, "Super+" );
+   if( mods & GLFW_MOD_CONTROL ) strncat( buffer, "Ctrl+",  bufferSize - strlen( buffer ) - 1 );
+   if( mods & GLFW_MOD_ALT     ) strncat( buffer, "Alt+",   bufferSize - strlen( buffer ) - 1 );
+   if( mods & GLFW_MOD_SHIFT   ) strncat( buffer, "Shift+", bufferSize - strlen( buffer ) - 1 );
+   if( mods & GLFW_MOD_SUPER   ) strncat( buffer, "Super+", bufferSize - strlen( buffer ) - 1 );
 
    const char *keyName = get_key_name( key );
    if( keyName )
    {
-      strcat( shortcutName, keyName );
+      strncat( buffer, keyName, bufferSize - strlen( buffer ) - 1 );
    }
    else
    {
       char keyBuf[ 16 ];
-      sprintf( keyBuf, "Key_%d", key );
-      strcat( shortcutName, keyBuf );
+      snprintf( keyBuf, sizeof( keyBuf ), "Key_%d", key );
+      strncat( buffer, keyBuf, bufferSize - strlen( buffer ) - 1 );
    }
-
-   return shortcutName;
 }

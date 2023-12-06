@@ -72,7 +72,7 @@ struct _MenuItem
    bool        mouseOver;
    bool        isClicked;
    int         shortcutKey;
-   const char *shortcutName;
+   char        shortcutName[ 64 ];
    void        ( *onClick )( MenuItem *pMenuItem );
 };
 
@@ -88,7 +88,8 @@ struct _MenuBar
    bool        isClicked;
    MenuItem   *pMenuItems[ MENU_ITEM_MAX ];
    int         iMenuItemsCount;
-   int         iDefaultMenuItemsWidth;
+   int         iMenuItemsWidth;
+   int         iMenuItemsWidthShortcutName;
    bool        bMenuItemDisplayed;
 };
 
@@ -118,7 +119,7 @@ struct _App
    int          winMaximized;
    unsigned int background;
    double       previousTime;
-   Menu        *pMenu;
+   //Menu        *pMenu;
 };
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
@@ -133,9 +134,6 @@ void  PollEvents();
 void  WaitEvents();
 void  WaitEventsTimeout( double timeout );
 void  SetTargetFPS( App *pApp, int targetFPS );
-
-// Key
-const char *GenerateShortcutName( int key, int mods );
 
 //--- Text
 void DrawText( int x, int y, const char *text, unsigned int foreground );
@@ -152,6 +150,7 @@ MenuBar *MenuBarNew( Menu *pMenu, const char *title );
 void     MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int key, int mods, void ( *onClick )( MenuItem * ) );
 void     DrawMenu( Menu *pMenu );
 void     FreeMenu( Menu *pMenu );
+void     PrintMenuItemStruct( const MenuItem *pMenuItem );
 
 //--- Shapes
 void Point( int x, int y, unsigned int color );
@@ -172,6 +171,7 @@ bool openEmailClient( const char *emailAddress );
 // internal
 void check_open_gl_error( const char *stmt, const char *fname, int line, GLenum *errCode );
 void set_color_from_hex( unsigned int hexColor );
+void GenerateShortcutName( char *buffer, int bufferSize, int key, int mods );
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 // macros

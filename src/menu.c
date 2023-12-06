@@ -15,6 +15,50 @@ static bool is_point_inside_menu_item( MenuItem *pMenuItem, int x, int y )
    return x >= pMenuItem->x && x <= ( pMenuItem->x + pMenuItem->width ) && y >= pMenuItem->y && y <= ( pMenuItem->y + pMenuItem->height );
 }
 
+static void menuitem_key_press( Menu *pMenu )
+{
+   if( pMenu->pApp->keyAction == GLFW_PRESS )
+   {
+      bool handled = F; // Zmienna wskazująca, czy zdarzenie zostało obsłużone
+
+      for( int i = 0; i < pMenu->iMenuBarsCount && ! handled; ++ i )
+      {
+         MenuBar *pMenuBar = pMenu->pMenuBars[ i ];
+         for( int j = 0; j < pMenuBar->iMenuItemsCount; ++j )
+         {
+            MenuItem *pMenuItem = pMenuBar->pMenuItems[ j ];
+            if( pMenuItem->shortcutKey == pMenu->pApp->keyCode )
+            {
+               if( pMenuItem->onClick )
+               {
+                  pMenuItem->onClick(pMenuItem);
+                  pMenu->pApp->keyCode = 0;
+                  pMenu->pApp->keyAction = 0;
+                  handled = T;
+                  break;
+               }
+            }
+         }
+      }
+   }
+}
+
+static void menuitem_mouse_press( Menu *pMenu, MenuItem *pMenuItem )
+{
+   if( pMenu->pApp->mouseButton == GLFW_MOUSE_BUTTON_LEFT && pMenu->pApp->mouseAction == GLFW_PRESS )
+   {
+      if( pMenuItem->mouseOver )
+      {
+         if( pMenuItem->onClick )
+         {
+            pMenuItem->onClick( pMenuItem );
+            pMenu->pApp->keyCode = 0;
+            pMenu->pApp->keyAction = 0;
+         }
+      }
+   }
+}
+
 Menu *MenuNew( App *pApp )
 {
    Menu *pMenu = malloc( sizeof( Menu ) );
@@ -26,7 +70,6 @@ Menu *MenuNew( App *pApp )
 
    memset( pMenu, 0, sizeof( Menu ) );
    pMenu->pApp = pApp;
-   pApp->pMenu = pMenu; // Przypisanie utworzonego menu do struktury App
 
    return pMenu;
 }
@@ -74,17 +117,25 @@ void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int key, int mo
    memset( pMenuItem, 0, sizeof( MenuItem ) );
 
    int textWidth = strlen( selectTitle ) * BITMAP_WIDTH;
-   pMenuItem->width = textWidth + 2 * MENU_ITEM_TEXT_MARGIN;
-
-   if( pMenuItem->width > pMenuBar->iDefaultMenuItemsWidth )
+   int tempWidth = textWidth + 2 * MENU_ITEM_TEXT_MARGIN;
+   if( tempWidth > pMenuBar->iMenuItemsWidth )
    {
-      pMenuBar->iDefaultMenuItemsWidth = pMenuItem->width;
+      pMenuBar->iMenuItemsWidth = tempWidth;
    }
+
    pMenuItem->height = MENU_ITEM_HEIGHT;
    pMenuItem->selectTitle = selectTitle;
    pMenuItem->textMargin = MENU_ITEM_TEXT_MARGIN;
    pMenuItem->shortcutKey = key;
-   pMenuItem->shortcutName = GenerateShortcutName( key, mods );
+   GenerateShortcutName( pMenuItem->shortcutName, sizeof( pMenuItem->shortcutName ), key, mods );
+
+   textWidth = strlen( pMenuItem->shortcutName ) * BITMAP_WIDTH;
+   tempWidth = textWidth + MENU_ITEM_TEXT_MARGIN;
+   if( tempWidth > pMenuBar->iMenuItemsWidthShortcutName )
+   {
+      pMenuBar->iMenuItemsWidthShortcutName = tempWidth;
+   }
+
    pMenuItem->onClick = onClick;
 
    pMenuBar->pMenuItems[ pMenuBar->iMenuItemsCount++ ] = pMenuItem;
@@ -94,6 +145,7 @@ void DrawMenu( Menu *pMenu )
 {
    if( pMenu )
    {
+      menuitem_key_press( pMenu );
       int currentX = 0;
       FillRect( 0, 0, pMenu->pApp->width, MENU_BAR_HEIGHT, 0xFFFFFF );
 
@@ -107,17 +159,16 @@ void DrawMenu( Menu *pMenu )
          pMenuBar->y = 0;
          currentX += pMenuBar->width;
 
-         bool isMouseOverMenuBar = is_point_inside_menu_bar( pMenuBar, pMenu->pApp->cursorX, pMenu->pApp->cursorY );
+         pMenuBar->mouseOver = is_point_inside_menu_bar( pMenuBar, pMenu->pApp->cursorX, pMenu->pApp->cursorY );
          bool isMouseOverMenuItem = F;
-         pMenuBar->mouseOver = isMouseOverMenuBar;
 
-         if( isMouseOverMenuBar )
+         if( pMenuBar->mouseOver )
          {
             pMenuBar->bMenuItemDisplayed = T;
             FillRect( pMenuBar->x, pMenuBar->y, pMenuBar->width, MENU_BAR_HEIGHT, 0xE5E5E5 );
          }
 
-         DrawText( pMenuBar->x + pMenuBar->textMargin, ( MENU_BAR_HEIGHT - BITMAP_HEIGHT ) / 2, pMenuBar->title, 0x0 );
+         DrawText( pMenuBar->x + pMenuBar->textMargin, ( MENU_BAR_HEIGHT - BITMAP_HEIGHT ) / 2, pMenuBar->title, pMenuBar->mouseOver ? 0x0 : 0XB2B2B2 );
 
          if( pMenuBar->bMenuItemDisplayed )
          {
@@ -128,7 +179,7 @@ void DrawMenu( Menu *pMenu )
 
                pMenuItem->x = pMenuBar->x;
                pMenuItem->y = menuItemY;
-               pMenuItem->width = pMenuBar->iDefaultMenuItemsWidth;
+               pMenuItem->width = pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcutName;
                pMenuItem->height = MENU_ITEM_HEIGHT;
 
                if( is_point_inside_menu_item( pMenuItem, pMenu->pApp->cursorX, pMenu->pApp->cursorY ) )
@@ -143,29 +194,20 @@ void DrawMenu( Menu *pMenu )
                   FillRect( pMenuItem->x, pMenuItem->y, pMenuItem->width, pMenuItem->height, 0xFFFFFF );
                }
 
-               if( pMenu->pApp->mouseButton == GLFW_MOUSE_BUTTON_LEFT && pMenu->pApp->mouseAction == GLFW_PRESS )
-               {
-                  if( pMenuItem->mouseOver )
-                  {
-                     pMenuItem->isClicked = T;
-                     if( pMenuItem->onClick )
-                     {
-                        pMenuItem->onClick( pMenuItem );
-                     }
-                  }
-               }
-               else if( pMenu->pApp->mouseButton == GLFW_MOUSE_BUTTON_LEFT && pMenu->pApp->mouseAction == GLFW_RELEASE )
-               {
-                  pMenuItem->isClicked = F;
-               }
+               menuitem_mouse_press( pMenu, pMenuItem );
 
+               // Rysowanie selectTitle
                DrawText( pMenuItem->x + pMenuItem->textMargin, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->selectTitle, 0x0 );
+               // Rysowanie shortcutName
+               int shortcutX = pMenuItem->x + pMenuItem->width - pMenuBar->iMenuItemsWidthShortcutName;
+               DrawText( shortcutX, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->shortcutName, pMenuItem->mouseOver ? 0x0 : 0XB2B2B2 );
+
                menuItemY += pMenuItem->height;
             }
 
-            Rect( pMenuBar->x + 1, MENU_BAR_HEIGHT, pMenuBar->iDefaultMenuItemsWidth, pMenuBar->iMenuItemsCount * MENU_ITEM_HEIGHT, 0x0 );
+            Rect( pMenuBar->x + 1, MENU_BAR_HEIGHT, pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcutName, pMenuBar->iMenuItemsCount * MENU_ITEM_HEIGHT, 0x0 );
 
-            if( ! isMouseOverMenuBar && ! isMouseOverMenuItem )
+            if( ! pMenuBar->mouseOver && ! isMouseOverMenuItem )
             {
                pMenuBar->bMenuItemDisplayed = F;
             }
@@ -204,4 +246,35 @@ void FreeMenu( Menu *pMenu )
    {
       printf( "Warning: Attempted to free a NULL pointer.\n" );
    }
+}
+
+void PrintMenuItemStruct( const MenuItem *pMenuItem )
+{
+   printf( "\033[2J" );
+   printf( "\033[H" );
+
+   if( pMenuItem )
+   {
+      printf( "MenuItem Structure\n" );
+      printf( "[\n" );
+      printf( "   X                        : %d\n", pMenuItem->x );
+      printf( "   Y                        : %d\n", pMenuItem->y );
+      printf( "   Width                    : %d\n", pMenuItem->width );
+      printf( "   Height                   : %d\n", pMenuItem->height );
+      printf( "   Select title             : %s\n", pMenuItem->selectTitle );
+      printf( "   Text margin              : %d\n", pMenuItem->textMargin );
+      printf( "   Mouse over               : %d\n", pMenuItem->mouseOver );
+      printf( "   Is clicked               : %d\n", pMenuItem->isClicked );
+      printf( "   Shortcut key             : %d\n", pMenuItem->shortcutKey );
+      printf( "   Shortcut name            : %s\n", pMenuItem->shortcutName );
+      printf( "   onClick function pointer : %p\n", (void*) pMenuItem->onClick );
+      printf( "]\n" );
+   }
+   else
+   {
+      printf( "HBGL structure is NULL\n" );
+      return;
+   }
+
+   fflush( stdout );
 }
