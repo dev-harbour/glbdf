@@ -30,7 +30,7 @@ extern unsigned int fontData[ ENCODING ][ BITMAP_HEIGHT ];
 
 #define MENU_ITEM_MAX         25
 #define MENU_ITEM_HEIGHT      24
-#define MENU_ITEM_TEXT_MARGIN 10
+#define MENU_ITEM_TEXT_MARGIN 24
 
 
 typedef enum bool
