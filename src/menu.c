@@ -19,7 +19,7 @@ static void menuitem_key_press( Menu *pMenu )
 {
    if( pMenu->pApp->keyAction == GLFW_PRESS )
    {
-      bool handled = F; // Zmienna wskazująca, czy zdarzenie zostało obsłużone
+      bool handled = F;
 
       for( int i = 0; i < pMenu->iMenuBarsCount && ! handled; ++ i )
       {
@@ -147,7 +147,7 @@ void DrawMenu( Menu *pMenu )
    {
       menuitem_key_press( pMenu );
       int currentX = 0;
-      FillRect( 0, 0, pMenu->pApp->width, MENU_BAR_HEIGHT, 0xFFFFFF );
+      FillRect( 0, 0, pMenu->pApp->width, MENU_BAR_HEIGHT, MENU_BAR_DEFAULT );
 
       for( int i = 0; i < pMenu->iMenuBarsCount; ++i )
       {
@@ -165,10 +165,10 @@ void DrawMenu( Menu *pMenu )
          if( pMenuBar->mouseOver )
          {
             pMenuBar->bMenuItemDisplayed = T;
-            FillRect( pMenuBar->x, pMenuBar->y, pMenuBar->width, MENU_BAR_HEIGHT, 0x82264B );
+            FillRect( pMenuBar->x, pMenuBar->y, pMenuBar->width, MENU_BAR_HEIGHT, MENU_BAR_MOUSE_OVER );
          }
 
-         DrawText( pMenuBar->x + pMenuBar->textMargin, ( MENU_BAR_HEIGHT - BITMAP_HEIGHT ) / 2, pMenuBar->title, pMenuBar->mouseOver ? 0xFFFFFF : 0x264B82 );
+         DrawText( pMenuBar->x + pMenuBar->textMargin, ( MENU_BAR_HEIGHT - BITMAP_HEIGHT ) / 2, pMenuBar->title, pMenuBar->mouseOver ? MENU_BAR_MOUSE_OVER_TEXT : MENU_BAR_DEFAULT_TEXT );
 
          if( pMenuBar->bMenuItemDisplayed )
          {
@@ -186,30 +186,29 @@ void DrawMenu( Menu *pMenu )
                {
                   isMouseOverMenuItem = T;
                   pMenuItem->mouseOver = T;
-                  FillRect( pMenuItem->x, pMenuItem->y, pMenuItem->width, pMenuItem->height, 0x82264B );
+                  FillRect( pMenuItem->x, pMenuItem->y, pMenuItem->width, pMenuItem->height, MENU_ITEM_MOUSE_OVER );
 
-                  FillRect( pMenuBar->x, pMenuBar->y, pMenuBar->width, MENU_BAR_HEIGHT, 0x82264B );
-                  DrawText( pMenuBar->x + pMenuBar->textMargin, ( MENU_BAR_HEIGHT - BITMAP_HEIGHT ) / 2, pMenuBar->title, 0xFFFFFF );
+                  FillRect( pMenuBar->x, pMenuBar->y, pMenuBar->width, MENU_BAR_HEIGHT, MENU_BAR_IF_MOUSE_OVER_MENU_ITEM );
+                  DrawText( pMenuBar->x + pMenuBar->textMargin, ( MENU_BAR_HEIGHT - BITMAP_HEIGHT ) / 2, pMenuBar->title, MENU_BAR_IF_MOUSE_OVER_MENU_ITEM_TEXT );
                }
                else
                {
                   pMenuItem->mouseOver = F;
-                  FillRect( pMenuItem->x, pMenuItem->y, pMenuItem->width, pMenuItem->height, 0xFFFFFF );
+                  FillRect( pMenuItem->x, pMenuItem->y, pMenuItem->width, pMenuItem->height, MENU_ITEM_DEFAULT );
                }
 
                menuitem_mouse_press( pMenu, pMenuItem );
 
-               // Rysowanie selectTitle
-               DrawText( pMenuItem->x + pMenuItem->textMargin, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->selectTitle, pMenuItem->mouseOver ? 0xFFFFFF : 0x4B8226 );
-               // Rysowanie shortcutName
+               DrawText( pMenuItem->x + pMenuItem->textMargin, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->selectTitle, pMenuItem->mouseOver ? MENU_ITEM_DEFAULT_TEXT : MENU_ITEM_MOUSE_OVER_TEXT );
+
                int shortcutTextWidth = strlen( pMenuItem->shortcutName ) * BITMAP_WIDTH;
                int shortcutX = pMenuItem->x + pMenuItem->width - shortcutTextWidth - pMenuItem->textMargin;
-               DrawText( shortcutX, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->shortcutName, pMenuItem->mouseOver ? 0xFFFFFF : 0x267982 );
+               DrawText( shortcutX, pMenuItem->y + ( pMenuItem->height - BITMAP_HEIGHT ) / 2, pMenuItem->shortcutName, pMenuItem->mouseOver ? MENU_ITEM_MOUSE_OVER_TEXT_SHORTCUT : MENU_ITEM_DEFAULT_TEXT_SHORTCUT );
 
                menuItemY += pMenuItem->height;
             }
 
-            Rect( pMenuBar->x + 1, MENU_BAR_HEIGHT, pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcut, pMenuBar->iMenuItemsCount * MENU_ITEM_HEIGHT, 0x0 );
+            Rect( pMenuBar->x + 1, MENU_BAR_HEIGHT, pMenuBar->iMenuItemsWidth + pMenuBar->iMenuItemsWidthShortcut, pMenuBar->iMenuItemsCount * MENU_ITEM_HEIGHT, MENU_ITEM_BORDER );
 
             if( ! pMenuBar->mouseOver && ! isMouseOverMenuItem )
             {

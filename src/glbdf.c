@@ -135,7 +135,7 @@ App *CreateWindow( int width, int height, const char *title )
    pApp->width  = width;
    pApp->height = height;
    pApp->title  = title;
-   pApp->background = 0x323232;
+   pApp->background = APP_BACKGROUND;
 
    pApp->window = glfwCreateWindow( pApp->width, pApp->height, pApp->title, NULL, NULL );
    if( ! pApp->window )

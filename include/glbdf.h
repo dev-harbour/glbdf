@@ -9,6 +9,12 @@
 
 #include <GLFW/glfw3.h>
 
+#define DEFAULT_COLORS_GLBDF
+
+#ifdef DEFAULT_COLORS_GLBDF
+   #include "default_colors_glbdf.h"
+#endif
+
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 
 #define BDF_VERSION_MAJOR   0
