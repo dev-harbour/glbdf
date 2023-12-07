@@ -23,10 +23,10 @@ int main()
       MenuBarAddItem( fileMenu, "Open",             GLFW_KEY_O, GLFW_MOD_CONTROL, lastMenuItemClicked );
       MenuBarAddItem( fileMenu, "Save",             GLFW_KEY_S, GLFW_MOD_CONTROL, lastMenuItemClicked );
       MenuBarAddItem( fileMenu, "Save as...",       GLFW_KEY_S, GLFW_MOD_CONTROL | GLFW_MOD_SHIFT, lastMenuItemClicked );
-      MenuBarAddItem( fileMenu, "Close",            0, 0,                   lastMenuItemClicked );
+      MenuBarAddItem( fileMenu, "Close",            0, 0,                         lastMenuItemClicked );
       MenuBarAddItem( fileMenu, "Print",            GLFW_KEY_P, GLFW_MOD_CONTROL, lastMenuItemClicked );
-      MenuBarAddItem( fileMenu, "Printer setup...", 0, 0,                   lastMenuItemClicked );
-      MenuBarAddItem( fileMenu, "DOS Shell",        0, 0,                   lastMenuItemClicked );
+      MenuBarAddItem( fileMenu, "Printer setup...", 0, 0,                         lastMenuItemClicked );
+      MenuBarAddItem( fileMenu, "DOS Shell",        0, 0,                         lastMenuItemClicked );
       MenuBarAddItem( fileMenu, "Exit",             GLFW_KEY_Q, GLFW_MOD_CONTROL, lastMenuItemClicked );
 
    MenuBar *editMenu = MenuBarNew( menu, "Edit" );
@@ -42,11 +42,11 @@ int main()
       MenuBarAddItem( editMenu, "Stats of Block", 0, 0,                         lastMenuItemClicked );
 
    MenuBar *searchMenu = MenuBarNew( menu, "Search" );
-      MenuBarAddItem(searchMenu, "Find",          GLFW_KEY_F, GLFW_MOD_CONTROL, lastMenuItemClicked );
-      MenuBarAddItem(searchMenu, "Find Next",     GLFW_KEY_G, GLFW_MOD_CONTROL, lastMenuItemClicked );
-      MenuBarAddItem(searchMenu, "Find Previous", GLFW_KEY_G, GLFW_MOD_CONTROL | GLFW_MOD_SHIFT, lastMenuItemClicked );
-      MenuBarAddItem(searchMenu, "Replace",       GLFW_KEY_H, GLFW_MOD_CONTROL, lastMenuItemClicked );
-      MenuBarAddItem(searchMenu, "Go To...",      GLFW_KEY_G, GLFW_MOD_CONTROL | GLFW_MOD_ALT, lastMenuItemClicked );
+      MenuBarAddItem( searchMenu, "Find",          GLFW_KEY_F, GLFW_MOD_CONTROL, lastMenuItemClicked );
+      MenuBarAddItem( searchMenu, "Find Next",     GLFW_KEY_G, GLFW_MOD_CONTROL, lastMenuItemClicked );
+      MenuBarAddItem( searchMenu, "Find Previous", GLFW_KEY_G, GLFW_MOD_CONTROL | GLFW_MOD_SHIFT, lastMenuItemClicked );
+      MenuBarAddItem( searchMenu, "Replace",       GLFW_KEY_H, GLFW_MOD_CONTROL, lastMenuItemClicked );
+      MenuBarAddItem( searchMenu, "Go To...",      GLFW_KEY_G, GLFW_MOD_CONTROL | GLFW_MOD_ALT, lastMenuItemClicked );
 
    MenuBar *utilitiesMenu = MenuBarNew( menu, "Utilities" );
       MenuBarAddItem( utilitiesMenu, "Calculator",     0, 0, lastMenuItemClicked );
