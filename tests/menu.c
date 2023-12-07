@@ -14,7 +14,7 @@ static void lastMenuItemClicked( MenuItem *item )
 
 int main()
 {
-   App *app = CreateWindow( 830, 450, "Retro Style Menu" );
+   App *app = CreateWindow( 830, 450, "Sample Menu" );
 
    Menu *menu = MenuNew( app );
 

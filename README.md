@@ -10,6 +10,6 @@ For more info see [getting started](docs/README.md).
 
 ### Example
 
-Retro Style Menu [menu](src/menu.c)
+Sample Menu [menu](src/menu.c)
 
 ![Main](docs/assets/img/menu.png)
