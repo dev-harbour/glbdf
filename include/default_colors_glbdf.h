@@ -2,7 +2,7 @@
 #define DEFAULT_COLORS_GLBDF_H
 
 // App
-#define APP_BACKGROUND 0x264B82
+#define APP_BACKGROUND                        0x264B82
 
 // MenuBar
 #define MENU_BAR_DEFAULT                      0xFFFFFF

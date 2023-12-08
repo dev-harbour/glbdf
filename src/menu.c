@@ -31,7 +31,7 @@ static void menuitem_key_press( Menu *pMenu )
             {
                if( pMenuItem->onClick )
                {
-                  pMenuItem->onClick(pMenuItem);
+                  pMenuItem->onClick( pMenuItem );
                   pMenu->pApp->keyCode = 0;
                   pMenu->pApp->keyAction = 0;
                   handled = T;
@@ -90,6 +90,7 @@ MenuBar *MenuBarNew( Menu *pMenu, const char *title )
    }
 
    memset( pMenuBar, 0, sizeof( MenuBar ) );
+   pMenuBar->pMenu = pMenu;
    pMenuBar->height = MENU_BAR_HEIGHT;
    pMenuBar->title = title;
    pMenuBar->textMargin = MENU_BAR_TEXT_MARGIN;
@@ -115,7 +116,7 @@ void MenuBarAddItem( MenuBar *pMenuBar, const char *selectTitle, int key, int mo
    }
 
    memset( pMenuItem, 0, sizeof( MenuItem ) );
-
+   pMenuItem->pMenu = pMenuBar->pMenu;
    int textWidth = strlen( selectTitle ) * BITMAP_WIDTH;
    int tempWidth = textWidth + 2 * MENU_ITEM_TEXT_MARGIN;
    if( tempWidth > pMenuBar->iMenuItemsWidth )

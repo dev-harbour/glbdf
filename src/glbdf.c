@@ -180,6 +180,14 @@ bool MainLoop( App *pApp )
    return pApp->closeFlag;
 }
 
+void ExitApp( App *pApp )
+{
+   if( pApp )
+   {
+      glfwSetWindowShouldClose( pApp->window, GLFW_TRUE );
+   }
+}
+
 void BeginDrawing( App *pApp )
 {
    glfwGetFramebufferSize( pApp->window, &pApp->width, &pApp->height );

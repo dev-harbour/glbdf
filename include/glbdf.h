@@ -69,6 +69,7 @@ struct _Button
 
 struct _MenuItem
 {
+   Menu       *pMenu;
    int         x;
    int         y;
    int         width;
@@ -84,6 +85,7 @@ struct _MenuItem
 
 struct _MenuBar
 {
+   Menu       *pMenu;
    int         x;
    int         y;
    int         width;
@@ -132,6 +134,7 @@ struct _App
 // API functions
 App  *CreateWindow( int width, int height, const char *title );
 bool  MainLoop( App *pApp );
+void  ExitApp( App *pApp );
 void  BeginDrawing( App *pApp );
 void  EndDrawing( const App *pApp );
 int   CloseAll( App *pApp );
