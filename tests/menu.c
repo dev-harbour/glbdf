@@ -35,7 +35,7 @@ int main()
       MenuBarAddItem( fileMenu, "Print",            GLFW_KEY_P, GLFW_MOD_CONTROL, lastMenuItemClicked );
       MenuBarAddItem( fileMenu, "Printer setup...", 0, 0,                         lastMenuItemClicked );
       MenuBarAddItem( fileMenu, "DOS Shell",        0, 0,                         lastMenuItemClicked );
-      MenuBarAddItem( fileMenu, "Exit",             GLFW_KEY_Q, GLFW_MOD_CONTROL, onExitClicked );
+      MenuBarAddItem( fileMenu, "Exit",             GLFW_KEY_Q, GLFW_MOD_CONTROL, lastMenuItemClicked );
 
    MenuBar *editMenu = MenuBarNew( menu, "Edit" );
       MenuBarAddItem( editMenu, "Undo",           GLFW_KEY_Z, GLFW_MOD_CONTROL, lastMenuItemClicked );

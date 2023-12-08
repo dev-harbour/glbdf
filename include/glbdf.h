@@ -106,6 +106,7 @@ struct _Menu
    App     *pApp;
    MenuBar *pMenuBars[ MENU_BAR_MAX ];
    int      iMenuBarsCount;
+   bool     isVisible;
 };
 
 struct _App
