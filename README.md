@@ -10,6 +10,6 @@ For more info see [getting started](docs/README.md).
 
 ### Example
 
-Sample Menu [menu.c](src/menu.c)
+Sample Menu [menu.c](tests/menu.c)
 
 ![Main](docs/assets/img/menu.png)
